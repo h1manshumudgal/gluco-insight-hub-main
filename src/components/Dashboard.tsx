@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   glucoseToday,
   glucoseWeekly,
@@ -73,7 +73,9 @@ function Stat({ icon: Icon, label, value, sub, trend, color = "primary" }: StatP
   return (
     <Card className="p-5 bg-gradient-card hover:shadow-elegant transition">
       <div className="flex items-center justify-between">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${statColorClasses[color]}`}>
+        <div
+          className={`flex h-10 w-10 items-center justify-center rounded-lg ${statColorClasses[color]}`}
+        >
           <Icon className="h-5 w-5" />
         </div>
         {trend ? (
@@ -110,7 +112,9 @@ function PatientDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold sm:text-3xl">Good day, {user?.name.split(" ")[0]} 👋</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Here's your glucose overview for today.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Here's your glucose overview for today.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
@@ -120,10 +124,25 @@ function PatientDashboard() {
             142 <span className="text-base font-normal opacity-80">mg/dL</span>
           </div>
           <div className="mt-1 text-xs opacity-80">Current glucose</div>
-          <Badge className="mt-3 border-0 bg-white/20 text-primary-foreground hover:bg-white/30">In range</Badge>
+          <Badge className="mt-3 border-0 bg-white/20 text-primary-foreground hover:bg-white/30">
+            In range
+          </Badge>
         </Card>
-        <Stat icon={TrendingUp} label="Avg glucose (7d)" value="124" sub="mg/dL" trend="-4%" color="success" />
-        <Stat icon={Activity} label="Time in range" value="72%" sub="↑ 4% vs last week" color="success" />
+        <Stat
+          icon={TrendingUp}
+          label="Avg glucose (7d)"
+          value="124"
+          sub="mg/dL"
+          trend="-4%"
+          color="success"
+        />
+        <Stat
+          icon={Activity}
+          label="Time in range"
+          value="72%"
+          sub="↑ 4% vs last week"
+          color="success"
+        />
         <Stat icon={ArrowUpRight} label="Time high" value="18%" color="warning" />
         <Stat icon={AlertTriangle} label="Time low" value="6%" color="destructive" />
       </div>
@@ -155,7 +174,13 @@ function PatientDashboard() {
                   borderRadius: 8,
                 }}
               />
-              <Area type="monotone" dataKey="value" stroke={chartTheme.stroke} strokeWidth={2} fill="url(#g)" />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke={chartTheme.stroke}
+                strokeWidth={2}
+                fill="url(#g)"
+              />
             </AreaChart>
           </ResponsiveContainer>
         </Card>
@@ -165,7 +190,13 @@ function PatientDashboard() {
           <p className="text-xs text-muted-foreground mb-4">Last 7 days</p>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
-              <Pie data={tirData} dataKey="value" innerRadius={50} outerRadius={80} paddingAngle={2}>
+              <Pie
+                data={tirData}
+                dataKey="value"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={2}
+              >
                 {tirData.map((entry, index) => (
                   <Cell key={index} fill={entry.color} />
                 ))}
@@ -221,7 +252,13 @@ function PatientDashboard() {
                   borderRadius: 8,
                 }}
               />
-              <Line type="monotone" dataKey="avg" stroke={chartTheme.stroke} strokeWidth={2} dot={false} />
+              <Line
+                type="monotone"
+                dataKey="avg"
+                stroke={chartTheme.stroke}
+                strokeWidth={2}
+                dot={false}
+              />
             </LineChart>
           </ResponsiveContainer>
         </Card>
@@ -237,7 +274,10 @@ function PatientDashboard() {
           </div>
           <div className="space-y-2">
             {events.slice(0, 4).map((e) => (
-              <div key={e.id} className="flex items-center gap-3 rounded-lg p-2 hover:bg-secondary/50">
+              <div
+                key={e.id}
+                className="flex items-center gap-3 rounded-lg p-2 hover:bg-secondary/50"
+              >
                 <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
                   {e.type === "meal" ? (
                     <Heart className="h-4 w-4 text-primary" />
@@ -318,13 +358,28 @@ function DoctorDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold sm:text-3xl">Dr. {user?.name.split(" ").pop()} — Clinical Overview</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Today's priorities and alerts across your patient panel.</p>
+        <h1 className="text-2xl font-bold sm:text-3xl">
+          Dr. {user?.name.split(" ").pop()} — Clinical Overview
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Today's priorities and alerts across your patient panel.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat icon={Users} label="Assigned patients" value={patients.length} sub="+2 this week" color="primary" />
-        <Stat icon={AlertTriangle} label="High-risk patients" value={critical.length + attention.length} color="warning" />
+        <Stat
+          icon={Users}
+          label="Assigned patients"
+          value={patients.length}
+          sub="+2 this week"
+          color="primary"
+        />
+        <Stat
+          icon={AlertTriangle}
+          label="High-risk patients"
+          value={critical.length + attention.length}
+          color="warning"
+        />
         <Stat icon={Bell} label="Critical alerts (24h)" value="7" color="destructive" />
         <Stat icon={Calendar} label="Upcoming visits" value={appointments.length} color="success" />
       </div>
@@ -336,7 +391,9 @@ function DoctorDashboard() {
               <h3 className="flex items-center gap-2 font-semibold">
                 <AlertTriangle className="h-4 w-4 text-destructive" /> Priority Queue
               </h3>
-              <p className="text-xs text-muted-foreground">Patients requiring immediate attention</p>
+              <p className="text-xs text-muted-foreground">
+                Patients requiring immediate attention
+              </p>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link to="/app/queue">Full queue</Link>
@@ -435,14 +492,33 @@ function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold">Platform Overview</h1>
-        <p className="text-muted-foreground text-sm mt-1">System-wide analytics, users, and activity.</p>
+        <p className="text-muted-foreground text-sm mt-1">
+          System-wide analytics, users, and activity.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat icon={Users} label="Total users" value={adminStats.totalUsers.toLocaleString()} trend="+12%" color="primary" />
-        <Stat icon={Heart} label="Patients" value={adminStats.totalPatients.toLocaleString()} color="success" />
+        <Stat
+          icon={Users}
+          label="Total users"
+          value={adminStats.totalUsers.toLocaleString()}
+          trend="+12%"
+          color="primary"
+        />
+        <Stat
+          icon={Heart}
+          label="Patients"
+          value={adminStats.totalPatients.toLocaleString()}
+          color="success"
+        />
         <Stat icon={Stethoscope} label="Doctors" value={adminStats.totalDoctors} color="primary" />
-        <Stat icon={Upload} label="Daily uploads" value={adminStats.dailyUploads.toLocaleString()} trend="+8%" color="warning" />
+        <Stat
+          icon={Upload}
+          label="Daily uploads"
+          value={adminStats.dailyUploads.toLocaleString()}
+          trend="+8%"
+          color="warning"
+        />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -471,8 +547,20 @@ function AdminDashboard() {
                 }}
               />
               <Legend />
-              <Area type="monotone" dataKey="users" stroke={chartTheme.stroke} fill="url(#u1)" strokeWidth={2} />
-              <Area type="monotone" dataKey="uploads" stroke="oklch(0.65 0.16 155)" fill="url(#u2)" strokeWidth={2} />
+              <Area
+                type="monotone"
+                dataKey="users"
+                stroke={chartTheme.stroke}
+                fill="url(#u1)"
+                strokeWidth={2}
+              />
+              <Area
+                type="monotone"
+                dataKey="uploads"
+                stroke="oklch(0.65 0.16 155)"
+                fill="url(#u2)"
+                strokeWidth={2}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </Card>
@@ -503,7 +591,9 @@ function AdminDashboard() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         <Card className="p-6">
-          <h3 className="font-semibold flex items-center gap-2 mb-4"><ShieldCheck className="w-4 h-4 text-primary" /> Recent Admin Actions</h3>
+          <h3 className="font-semibold flex items-center gap-2 mb-4">
+            <ShieldCheck className="w-4 h-4 text-primary" /> Recent Admin Actions
+          </h3>
           <div className="space-y-2 text-sm">
             {[
               { u: "admin@glucocare.io", a: "Role changed: jane@x.com → doctor", t: "2 min ago" },
@@ -511,7 +601,10 @@ function AdminDashboard() {
               { u: "admin@glucocare.io", a: "Suspended user: spammer@x.com", t: "3 hr ago" },
               { u: "admin@glucocare.io", a: "Updated email settings", t: "Yesterday" },
             ].map((l, i) => (
-              <div key={i} className="flex justify-between py-2 border-b border-border last:border-0">
+              <div
+                key={i}
+                className="flex justify-between py-2 border-b border-border last:border-0"
+              >
                 <div>
                   <div className="font-medium">{l.a}</div>
                   <div className="text-xs text-muted-foreground">{l.u}</div>
@@ -523,7 +616,9 @@ function AdminDashboard() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="font-semibold flex items-center gap-2 mb-4"><Building2 className="w-4 h-4 text-primary" /> Top Clinics</h3>
+          <h3 className="font-semibold flex items-center gap-2 mb-4">
+            <Building2 className="w-4 h-4 text-primary" /> Top Clinics
+          </h3>
           <div className="space-y-3">
             {[
               { n: "Riverside Endocrine", p: 482, t: 78 },
@@ -531,8 +626,14 @@ function AdminDashboard() {
               { n: "Cedar Health Group", p: 264, t: 81 },
               { n: "Coastal Care Clinic", p: 198, t: 69 },
             ].map((c) => (
-              <div key={c.n} className="flex items-center justify-between p-3 rounded-lg bg-secondary/40">
-                <div><div className="font-medium text-sm">{c.n}</div><div className="text-xs text-muted-foreground">{c.p} patients</div></div>
+              <div
+                key={c.n}
+                className="flex items-center justify-between p-3 rounded-lg bg-secondary/40"
+              >
+                <div>
+                  <div className="font-medium text-sm">{c.n}</div>
+                  <div className="text-xs text-muted-foreground">{c.p} patients</div>
+                </div>
                 <Badge variant="outline">TIR {c.t}%</Badge>
               </div>
             ))}

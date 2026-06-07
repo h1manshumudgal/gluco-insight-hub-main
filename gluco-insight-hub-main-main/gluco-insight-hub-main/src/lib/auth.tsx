@@ -13,7 +13,13 @@ export interface User {
 interface AuthCtx {
   user: User | null;
   login: (email: string, password: string, role?: Role) => Promise<User>;
-  register: (data: { name: string; email: string; phone: string; password: string; role: Exclude<Role, "admin"> }) => Promise<User>;
+  register: (data: {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    role: Exclude<Role, "admin">;
+  }) => Promise<User>;
   logout: () => void;
 }
 
@@ -23,16 +29,29 @@ const KEY = "glucocare_user";
 // Fixed demo accounts — the ONLY accepted credentials for mock auth.
 // Admin accounts are provisioned here and cannot be self-registered.
 const DEMO_ACCOUNTS: Record<string, { password: string; user: Omit<User, "id"> }> = {
-  "patient@demo.com": { password: "demo", user: { name: "Sarah Johnson", email: "patient@demo.com", role: "patient" } },
-  "doctor@demo.com":  { password: "demo", user: { name: "Dr. Anjali Patel", email: "doctor@demo.com",  role: "doctor"  } },
-  "admin@demo.com":   { password: "demo", user: { name: "Admin User",      email: "admin@demo.com",   role: "admin"   } },
+  "patient@demo.com": {
+    password: "demo",
+    user: { name: "Sarah Johnson", email: "patient@demo.com", role: "patient" },
+  },
+  "doctor@demo.com": {
+    password: "demo",
+    user: { name: "Dr. Anjali Patel", email: "doctor@demo.com", role: "doctor" },
+  },
+  "admin@demo.com": {
+    password: "demo",
+    user: { name: "Admin User", email: "admin@demo.com", role: "admin" },
+  },
 };
 
 // Registered (non-admin) users persist in localStorage to allow re-login.
 const REG_KEY = "glucocare_registered";
 type Registered = Record<string, { password: string; user: Omit<User, "id"> }>;
 const loadRegistered = (): Registered => {
-  try { return JSON.parse(localStorage.getItem(REG_KEY) || "{}"); } catch { return {}; }
+  try {
+    return JSON.parse(localStorage.getItem(REG_KEY) || "{}");
+  } catch {
+    return {};
+  }
 };
 const saveRegistered = (r: Registered) => localStorage.setItem(REG_KEY, JSON.stringify(r));
 
@@ -99,9 +118,35 @@ export function useAuth() {
 // Route-level RBAC map: which paths are allowed for which role.
 // Patterns: exact match, or prefix match for dynamic segments.
 const ROLE_ROUTES: Record<Role, string[]> = {
-  patient: ["/app", "/app/glucose", "/app/events", "/app/medications", "/app/insights", "/app/appointments", "/app/messages", "/app/alerts", "/app/settings"],
-  doctor:  ["/app", "/app/patients", "/app/queue", "/app/appointments", "/app/messages", "/app/insights", "/app/settings"],
-  admin:   ["/app", "/app/patients", "/app/users", "/app/clinics", "/app/analytics", "/app/audit", "/app/settings"],
+  patient: [
+    "/app",
+    "/app/glucose",
+    "/app/events",
+    "/app/medications",
+    "/app/insights",
+    "/app/appointments",
+    "/app/messages",
+    "/app/alerts",
+    "/app/settings",
+  ],
+  doctor: [
+    "/app",
+    "/app/patients",
+    "/app/queue",
+    "/app/appointments",
+    "/app/messages",
+    "/app/insights",
+    "/app/settings",
+  ],
+  admin: [
+    "/app",
+    "/app/patients",
+    "/app/users",
+    "/app/clinics",
+    "/app/analytics",
+    "/app/audit",
+    "/app/settings",
+  ],
 };
 
 export function canAccess(role: Role, pathname: string): boolean {

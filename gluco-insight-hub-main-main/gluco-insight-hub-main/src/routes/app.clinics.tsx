@@ -14,22 +14,40 @@ const clinics = [
 function Clinics() {
   return (
     <div>
-      <PageHeader title="Clinic Management" desc="Multi-clinic analytics & assignments" action={<Button className="bg-gradient-primary"><Plus className="w-4 h-4 mr-2" />Create clinic</Button>} />
+      <PageHeader
+        title="Clinic Management"
+        desc="Multi-clinic analytics & assignments"
+        action={
+          <Button className="bg-gradient-primary">
+            <Plus className="w-4 h-4 mr-2" />
+            Create clinic
+          </Button>
+        }
+      />
       <div className="grid md:grid-cols-2 gap-4">
-        {clinics.map(c => (
+        {clinics.map((c) => (
           <Card key={c.n} className="p-5">
             <div className="flex items-start gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center"><Building2 className="w-5 h-5 text-primary-foreground" /></div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
+                <Building2 className="w-5 h-5 text-primary-foreground" />
+              </div>
               <div className="flex-1">
                 <div className="font-semibold">{c.n}</div>
                 <div className="text-sm text-muted-foreground">{c.loc}</div>
                 <div className="flex gap-2 mt-3 flex-wrap">
-                  <Badge variant="outline"><Users className="w-3 h-3 mr-1" />{c.p} patients</Badge>
+                  <Badge variant="outline">
+                    <Users className="w-3 h-3 mr-1" />
+                    {c.p} patients
+                  </Badge>
                   <Badge variant="outline">{c.d} doctors</Badge>
-                  <Badge className="bg-success/15 text-success hover:bg-success/15">TIR {c.tir}%</Badge>
+                  <Badge className="bg-success/15 text-success hover:bg-success/15">
+                    TIR {c.tir}%
+                  </Badge>
                 </div>
               </div>
-              <Button size="sm" variant="outline">Manage</Button>
+              <Button size="sm" variant="outline">
+                Manage
+              </Button>
             </div>
           </Card>
         ))}

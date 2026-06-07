@@ -9,14 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppUsersRouteImport } from './routes/app.users'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppQueueRouteImport } from './routes/app.queue'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppPatientsRouteImport } from './routes/app.patients'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppMedicationsRouteImport } from './routes/app.medications'
@@ -30,6 +33,11 @@ import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
 import { Route as AppPatientsIdRouteImport } from './routes/app.patients.$id'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -38,6 +46,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -68,6 +81,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
 const AppQueueRoute = AppQueueRouteImport.update({
   id: '/queue',
   path: '/queue',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPatientsRoute = AppPatientsRouteImport.update({
@@ -134,8 +152,10 @@ const AppPatientsIdRoute = AppPatientsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/appointments': typeof AppAppointmentsRoute
@@ -147,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/app/medications': typeof AppMedicationsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/patients': typeof AppPatientsRouteWithChildren
+  '/app/profile': typeof AppProfileRoute
   '/app/queue': typeof AppQueueRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/users': typeof AppUsersRoute
@@ -155,8 +176,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/appointments': typeof AppAppointmentsRoute
@@ -168,6 +191,7 @@ export interface FileRoutesByTo {
   '/app/medications': typeof AppMedicationsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/patients': typeof AppPatientsRouteWithChildren
+  '/app/profile': typeof AppProfileRoute
   '/app/queue': typeof AppQueueRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/users': typeof AppUsersRoute
@@ -178,8 +202,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/alerts': typeof AppAlertsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/appointments': typeof AppAppointmentsRoute
@@ -191,6 +217,7 @@ export interface FileRoutesById {
   '/app/medications': typeof AppMedicationsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/patients': typeof AppPatientsRouteWithChildren
+  '/app/profile': typeof AppProfileRoute
   '/app/queue': typeof AppQueueRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/users': typeof AppUsersRoute
@@ -202,8 +229,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/app/alerts'
     | '/app/analytics'
     | '/app/appointments'
@@ -215,6 +244,7 @@ export interface FileRouteTypes {
     | '/app/medications'
     | '/app/messages'
     | '/app/patients'
+    | '/app/profile'
     | '/app/queue'
     | '/app/settings'
     | '/app/users'
@@ -223,8 +253,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/app/alerts'
     | '/app/analytics'
     | '/app/appointments'
@@ -236,6 +268,7 @@ export interface FileRouteTypes {
     | '/app/medications'
     | '/app/messages'
     | '/app/patients'
+    | '/app/profile'
     | '/app/queue'
     | '/app/settings'
     | '/app/users'
@@ -245,8 +278,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/app/alerts'
     | '/app/analytics'
     | '/app/appointments'
@@ -258,6 +293,7 @@ export interface FileRouteTypes {
     | '/app/medications'
     | '/app/messages'
     | '/app/patients'
+    | '/app/profile'
     | '/app/queue'
     | '/app/settings'
     | '/app/users'
@@ -268,12 +304,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -286,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -328,6 +380,13 @@ declare module '@tanstack/react-router' {
       path: '/queue'
       fullPath: '/app/queue'
       preLoaderRoute: typeof AppQueueRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/patients': {
@@ -441,6 +500,7 @@ interface AppRouteChildren {
   AppMedicationsRoute: typeof AppMedicationsRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppPatientsRoute: typeof AppPatientsRouteWithChildren
+  AppProfileRoute: typeof AppProfileRoute
   AppQueueRoute: typeof AppQueueRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppUsersRoute: typeof AppUsersRoute
@@ -459,6 +519,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMedicationsRoute: AppMedicationsRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppPatientsRoute: AppPatientsRouteWithChildren,
+  AppProfileRoute: AppProfileRoute,
   AppQueueRoute: AppQueueRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppUsersRoute: AppUsersRoute,
@@ -470,8 +531,10 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

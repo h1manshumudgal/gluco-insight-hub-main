@@ -78,10 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "GlucoCare AI — Smart Diabetes & Glucose Monitoring" },
-      { name: "description", content: "Premium AI-powered diabetes management platform for patients, doctors, and clinics. Real-time glucose monitoring, predictive insights, and telemedicine." },
+      {
+        name: "description",
+        content:
+          "Premium AI-powered diabetes management platform for patients, doctors, and clinics. Real-time glucose monitoring, predictive insights, and telemedicine.",
+      },
       { name: "theme-color", content: "#1e88e5" },
       { property: "og:title", content: "GlucoCare AI — Smart Diabetes Monitoring" },
-      { property: "og:description", content: "AI-powered glucose monitoring & diabetes care platform." },
+      {
+        property: "og:description",
+        content: "AI-powered glucose monitoring & diabetes care platform.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -113,7 +120,7 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-import { AuthProvider } from "../lib/auth";
+import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../lib/theme";
 import { Toaster } from "../components/ui/sonner";
 
