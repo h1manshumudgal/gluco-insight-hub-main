@@ -108,10 +108,11 @@ function SegmentDot({ color }: { color: string }) {
 
 function PatientDashboard() {
   const { user } = useAuth();
+  const userName = user?.displayName || user?.email || "User";
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold sm:text-3xl">Good day, {user?.name.split(" ")[0]} 👋</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Good day, {userName.split(" ")[0]} 👋</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Here's your glucose overview for today.
         </p>
@@ -353,13 +354,14 @@ function PatientDashboard() {
 
 function DoctorDashboard() {
   const { user } = useAuth();
+  const userName = user?.displayName || user?.email || "Doctor";
   const critical = patients.filter((p) => p.risk === "critical");
   const attention = patients.filter((p) => p.risk === "attention");
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold sm:text-3xl">
-          Dr. {user?.name.split(" ").pop()} — Clinical Overview
+          Dr. {userName.split(" ").pop()} — Clinical Overview
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Today's priorities and alerts across your patient panel.
@@ -408,9 +410,9 @@ function DoctorDashboard() {
                 className="flex items-center gap-3 rounded-lg border border-border p-3 transition hover:bg-secondary/40"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-primary text-sm font-semibold text-primary-foreground">
-                  {p.name
+                  {(p.name || "P")
                     .split(" ")
-                    .map((n) => n[0])
+                    .map((n) => n[0] || "")
                     .join("")}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -645,9 +647,37 @@ function AdminDashboard() {
 }
 
 export function Dashboard() {
-  const { user } = useAuth();
-  if (!user) return null;
-  if (user.role === "doctor") return <DoctorDashboard />;
-  if (user.role === "admin") return <AdminDashboard />;
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-4">
+          <h2 className="text-xl font-semibold">Not authenticated</h2>
+          <p className="text-muted-foreground">Please sign in to view your dashboard</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Use displayName from Firebase User, fallback to email
+  const userName = user.displayName || user.email || "User";
+  
+  // Default to patient role for now
+  const userRole = (user as any).role || "patient";
+  
+  if (userRole === "doctor") return <DoctorDashboard />;
+  if (userRole === "admin") return <AdminDashboard />;
   return <PatientDashboard />;
 }
